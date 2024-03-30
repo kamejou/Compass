@@ -10,8 +10,18 @@ class UsersTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
-
+        DB::table('users')->insert([
+            'over_name' => 'OverName',
+            'under_name' => 'UnderName',
+            'over_name_kana' => 'OverNameKana',
+            'under_name_kana' => 'UnderNameKana',
+            'mail_address' => 'User@mailaddress.com',
+            'sex' => '0',
+            'birth_day' => '2000-01-01',
+            'role' => '1',
+            'password' => bcrypt('password'),
+        ]);
     }
 }
