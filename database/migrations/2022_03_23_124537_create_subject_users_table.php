@@ -11,6 +11,7 @@ class CreateSubjectUsersTable extends Migration
      *
      * @return void
      */
+
     public function up()
     {
         Schema::create('subject_users', function (Blueprint $table) {
