@@ -17,6 +17,7 @@ class User extends Authenticatable
 
     const CREATED_AT = null;
 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -66,9 +67,13 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Calendars\ReserveSettings', 'reserve_setting_users', 'user_id', 'reserve_setting_id')->withPivot('id');
     }
 
-    public function subjects(){
-        return ;// リレーションの定義
+    public function subjects(){//多対多の結合
+        return $this->belongsToMany(Subject::class, 'subject_users', 'user_id', 'subject_id');
     }
+    public function users()
+{
+    return $this->belongsToMany(User::class);
+}
 
     // いいねしているかどうか
     public function is_Like($post_id){
