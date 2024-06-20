@@ -19,8 +19,9 @@ class Post extends Model
         return $this->belongsTo('App\Models\Users\User');
     }
 
-    public function like(){
-        return $this->belongsTo('App\Models\Post\Like');
+    public function likes()
+    {
+        return $this->belongsToMany('App\Models\Users\User', 'likes', 'like_post_id', 'like_user_id');
     }
 
     public function postComments(){

@@ -81,6 +81,10 @@ class User extends Authenticatable
         return Like::where('like_user_id', Auth::id())->where('like_post_id', $post_id)->first(['likes.id']);
     }
 
+    public function likedPosts()
+    {
+        return $this->belongsToMany('App\Models\Post', 'likes', 'like_user_id', 'like_post_id');
+    }
     public function likePostId(){
         return Like::where('like_user_id', Auth::id());
     }
