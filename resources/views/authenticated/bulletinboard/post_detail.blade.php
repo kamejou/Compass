@@ -10,7 +10,7 @@
           <div>
           @if($post->user_id == Auth::user()->id)
             <span class="edit-modal-open" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
-            <a href="{{ route('post.delete', ['id' => $post->id]) }}">削除</a><p>Logged in User ID: {{ Auth::user()->id }}</p>
+            <a href="#" class="btn btn-danger delete-modal-open" data-post-id="{{ $post->id }}" data-post-title="{{ $post->title }}">削除</a>
           @endif
           </div>
         </div>
@@ -23,6 +23,9 @@
           </p>
           <span class="ml-5">{{ $post->created_at }}</span>
         </div>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
         <div class="detsail_post_title">{{ $post->post_title }}</div>
         <div class="mt-3 detsail_post">{{ $post->post }}</div>
       </div>
@@ -75,4 +78,51 @@
     </form>
   </div>
 </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">投稿の削除確認</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>本当にこの投稿を削除してもよろしいですか？</p>
+                    <p id="postTitle"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal">キャンセル</button>
+                    <form id="deleteForm" method="POST" action="">
+                        @csrf
+                        @method('DELETE')
+                        <a href="{{ route('post.delete', ['id' => $post->id]) }}">削除</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            var postTitle = document.getElementById('postTitle');
+            var deleteForm = document.getElementById('deleteForm');
+
+            document.querySelectorAll('.delete-modal-open').forEach(function (button) {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    var postId = this.getAttribute('data-post-id');
+                    var title = this.getAttribute('data-post-title');
+                    postTitle.textContent = title;
+                    deleteForm.action = '/posts/' + postId;
+                    deleteModal.show();
+                });
+            });
+        });
+    </script>
 @endsection
