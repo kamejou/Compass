@@ -19,9 +19,8 @@ class Subjects extends Model
     public function users(){//多対多の結合
      return $this->belongsToMany(User::class, 'subject_users', 'subject_id', 'user_id');
     }
-    public function subjects()
-{
-    return $this->belongsToMany(Subject::class);
+    public function subjects(){
+    return $this->belongsToMany(Subjects::class);
 }
 
 }
